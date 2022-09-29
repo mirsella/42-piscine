@@ -6,12 +6,11 @@
 /*   By: lgillard <lgillard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 11:17:07 by lgillard          #+#    #+#             */
-/*   Updated: 2022/09/22 19:09:35 by lgillard         ###   ########.fr       */
+/*   Updated: 2022/09/27 16:20:58 by lgillard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include <stdio.h>
 
 int	ft_is_charset(char c, char *charset)
 {
@@ -36,89 +35,57 @@ int	count_words(char *str, char *charset)
 	count = 1;
 	while (str[i] != '\0')
 	{
-		if (ft_is_charset(str[i], charset))
-		{
-			while (ft_is_charset(str[i], charset) && str[i] != '\0')
-				i++;
-			if (str[i] != '\0')
-				count++;
-		}
-		i++;
+		while (str[i] && ft_is_charset(str[i], charset))
+			i++;
+		if (str[i] && !ft_is_charset(str[i], charset))
+			count++;
+		while (str[i] && !ft_is_charset(str[i], charset))
+			i++;
 	}
 	return (count);
 }
 
-char	*strrange(char *str, char *charset, int start, int end)
+char	*getword(char *str, int i, char *charset)
 {
 	char	*res;
-	int		i;
+	int		j;
+	int		wordlen;
 
-	i = 0;
-	// if (ft_is_charset(str[start], charset))
-	// {
-	// 	printf("str[start] = %c start = %d\n", str[start], start);
-	// 	return (0);
-	// }
-	res = malloc(sizeof(char) * (end - start + 1));
-	while (start < end)
+	j = 0;
+	wordlen = 0;
+	while (str[i + wordlen] && !ft_is_charset(str[i + wordlen], charset))
+		wordlen++;
+	res = malloc(sizeof(char) * (wordlen + 1));
+	while (str[i] != '\0' && !ft_is_charset(str[i], charset))
 	{
-		res[i] = str[start];
+		res[j] = str[i];
 		i++;
-		start++;
+		j++;
 	}
-	res[i] = '\0';
+	res[j] = '\0';
 	return (res);
-}
-
-char	*splitn(char *str, char *charset, int i, int *start)
-{
-	int	startsep;
-	int	tmpstart;
-	char	*res;
-
-	tmpstart = *start;
-	startsep = 0;
-	if (ft_is_charset(str[i], charset))
-	{
-		startsep = i;
-		while (ft_is_charset(str[i], charset))
-		{
-			i++;
-		}
-		start = &i;
-		// res = strrange(str, charset, tmpstart, startsep);
-		// if (res == 0)
-		// 	return (0);
-		// return (res);
-		return (strrange(str, charset, tmpstart, startsep));
-	}
-	return (0);
 }
 
 char	**ft_split(char *str, char *charset)
 {
 	int		i;
 	int		wordcount;
-	int		start;
 	char	**tab;
 
 	i = 0;
-	start = 0;
 	wordcount = 0;
 	tab = malloc(sizeof(char *) * (count_words(str, charset) + 1));
-	while (wordcount < count_words(str, charset))
+	while (str[i])
 	{
-		if (str[i] == '\0')
-			break ;
-		tab[wordcount] = splitn(str, charset, i, &start);
-		i++;
-		if (tab[wordcount])
+		while (str[i] && ft_is_charset(str[i], charset))
+			i++;
+		if (str[i])
 		{
-			while (ft_is_charset(str[i], charset))
-				i++;
+			tab[wordcount] = getword(str, i, charset);
 			wordcount++;
-			start = i;
 		}
+		while (str[i] && !ft_is_charset(str[i], charset))
+			i++;
 	}
 	tab[wordcount] = 0;
 	return (tab);

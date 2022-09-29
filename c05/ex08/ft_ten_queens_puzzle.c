@@ -6,11 +6,12 @@
 /*   By: lgillard <lgillard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 20:47:38 by lgillard          #+#    #+#             */
-/*   Updated: 2022/09/22 09:45:52 by lgillard         ###   ########.fr       */
+/*   Updated: 2022/09/28 12:57:38 by lgillard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include <stdio.h>
 
 int	ft_min(int a, int b)
 {
@@ -20,47 +21,33 @@ int	ft_min(int a, int b)
 		return (b);
 }
 
-int	check(int grid[10][10], int x, int y)
+void	ft_printgrid(int grid[10][10])
 {
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	while (i < 9 && j < 9)
-	{
-		if (grid[x][j] == 1 || grid[i][y] == 1)
-			return (0);
-		i++;
-		j++;
-	}
-	return (0);
-}
-
-int	solve(int grid[10][10], int x, int *solutions)
-{
+	int	x;
 	int	y;
 
+	x = 0;
 	y = 0;
-	while (y < 10)
+	while (x < 10)
 	{
-		if (check(grid, x, y))
+		while (y < 10)
 		{
-			if (x == 9)
-				*solutions = *solutions + 1;
+			if (grid[x][y] == 1)
+				write(1, "1", 1);
+			else if (grid[x][y] == 2)
+				write(1, "2", 1);
 			else
-			{
-				grid[x][y] = 1;
-				solve(grid, x + 1, solutions);
-				grid[x][y] = 0;
-			}
+				write(1, "0", 1);
+			y++;
 		}
-		y++;
+		write(1, "\n", 1);
+		y = 0;
+		x++;
 	}
-	return (*solutions);
+	write(1, "\n", 1);
 }
 
-void	print(int grid[10][10])
+void	ft_print(int grid[10][10])
 {
 	int	x;
 	int	y;
@@ -71,13 +58,70 @@ void	print(int grid[10][10])
 	{
 		while (y < 9)
 		{
-			if (grid[x][y])
+			if (grid[x][y] == 2)
 			{
 				write(1, &y + '0', 1);
 			}
 			y++;
 		}
 		x++;
+	}
+}
+
+void	drawpath(int grid[10][10], int x, int y)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (i < 10 && j < 10)
+	{
+		if (grid[x + i][y + j] != 2 && grid[x + i][y - j] != 2
+			&& grid[x][j] != 2 && grid[i][y] != 2)
+		{
+			grid[x][j] = 1;
+			grid[i][y] = 1;
+			if (ft_min(x, y) == x && y + i < 9)
+				grid[x + i][y + i] = 1;
+			if (ft_min(x, y) == x && y - i + 1 > 0)
+				grid[x + i][y - i] = 1;
+			if (ft_min(x, y) == y && x + i < 9)
+				grid[x + i][y + i] = 1;
+			if (ft_min(x, y) == y && x - i + 1 > 0)
+				grid[x + i][y - i] = 1;
+		}
+		i++;
+		j++;
+	}
+}
+
+void	solve(int grid[10][10], int x, int *solutions)
+{
+	int	y;
+
+	if (x < 10)
+	{
+		y = 0;
+		while (y < 10)
+		{
+			if (grid[x][y] == 0)
+			{
+				printf("before x = %d, y = %d\n", x, y);
+				drawpath(grid, x, y);
+				grid[x][y] = 2;
+				ft_printgrid(grid);
+				solve(grid, x + 1, solutions);
+				grid[x][y] = 0;
+				printf("after x = %d, y = %d\n", x, y);
+			}
+			y++;
+		}
+	}
+	else
+	{
+		*solutions = *solutions + 1;
+		ft_print(grid);
 	}
 }
 
@@ -102,5 +146,6 @@ int	ft_ten_queens_puzzle(void)
 	}
 	solutions = 0;
 	solve(grid, 0, &solutions);
+	ft_printgrid(grid);
 	return (solutions);
 }

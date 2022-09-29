@@ -1,12 +1,12 @@
 /* ************************************************************************** */
-/*                                                                            */
+/*                                                                           */
 /*                                                        :::      ::::::::   */
 /*   ft_print_combn.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lgillard <lgillard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/18 21:27:29 by lgillard          #+#    #+#             */
-/*   Updated: 2022/09/18 21:34:58 by lgillard         ###   ########.fr       */
+/*   Created: 2022/09/14 17:55:36 by lgillard          #+#    #+#             */
+/*   Updated: 2022/09/27 16:29:21 by lgillard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,117 +14,50 @@
 
 void	ft_putchar(char c)
 {
-	write (1, &c, 1);
+	write(1, &c, 1);
 }
 
-void	ft_putstr(char *str)
+void	printnums(int *tab, int n)
 {
-	int i;
+	int	i;
 
 	i = 0;
-
-	while (str[i])
+	while (i < n)
+		ft_putchar(tab[i++] + '0');
+	if (tab[0] < (10 - n))
 	{
-		ft_putchar(str[i]);
-		i++;
+		ft_putchar(',');
+		ft_putchar(' ');
 	}
 }
 
-void	init_tab(char *tab, int len)
+int	recursive(int *tab, int n, int i)
 {
-	int i;
+	int	j;
 
-	i = 0;
-	while (i != len)
+	j = 0;
+	if (i == n)
 	{
-		tab[i] = '0';
-		i++;
-	}
-	tab[len] = '\n';
-}
-
-int		incr(char *str, int len)
-{
-	int i;
-	int j;
-
-	i = len - 1;
-	j = len - 1;
-	if (str[i] == '9')
-	{
-		while (i >= 0 && str[i] == '9')
-		{
-			i--;
-		}
-		if (i >= 0)
-		{
-			while (j != i && str[j] == '9') 
-			{
-				str[j] = '0';
-				j--;
-			}
-			str[i]++;
-			return (1);
-		}
+		printnums(tab, n);
 		return (0);
 	}
-	else
-		str[i]++;
-	return (1);
+	while (j <= 9)
+	{
+		tab[i] = j;
+		if (i == 0 || tab[i] > tab[i - 1])
+			recursive(tab, n, i + 1);
+		j++;
+	}
+	return (0);
 }
 
-int		good(char *str, int len)
+void	ft_print_combn(int n)
 {
-	int i;
-	int n;
-	int var_de_test;
-	
-	var_de_test = 0;
-	n = 1;
+	int	tab[9];
+	int	i;
+
 	i = 0;
-
-	while (1) 
-	{
-		if (str[i] >= str[i + n] && (i + n) < len)
-		{
-			return (0);
-		}
-		else if ((i + n + 1) <= (len - 1))
-		{
-			n++;
-		}
-		else if ((i + n) == (len - 1) && i != (len - 1))
-		{
-			i++;
-			n = 1;
-		}
-		else if (i == (len - 1))
-		{
-			return (1);
-		}
-	}
-}
-void	ft_print_combn(int len)
-{
-	char str[len];
-	int i;
-
-	i = 1;
-	init_tab(str, len);
-
-	while (i)
-	{
-		i = incr(str, len);
-		if (good(str, len))
-		{
-			ft_putstr(str);
-			if (i)
-			{
-				ft_putchar(',');
-				ft_putchar(' ');
-			}
-			else
-				ft_putchar('\n');
-		}
-	}
+	while (i < 9)
+		tab[i++] = 0;
+	recursive(tab, n, 0);
 }

@@ -6,7 +6,7 @@
 /*   By: badam <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/20 01:09:37 by badam             #+#    #+#             */
-/*   Updated: 2019/06/20 01:54:46 by badam            ###   ########.fr       */
+/*   Updated: 2022/09/26 20:31:14 by lgillard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,8 @@ int	main(void)
 	range = ft_range(3, 3);
 	
 	range = ft_range(-1, 1);
-	printf("-1, 0 : %d, %d", range[0], range[1]);
+	printf("-1, 0 : %d, %d\n", range[0], range[1]);
+
+	range = ft_range(-10, 9);
+	printf("-10, 8 : %d, %d\n", range[0], range[18]);
 }

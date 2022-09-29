@@ -18,4 +18,5 @@ int		main(void)
 	ft_putnbr_base(42, "+-0123456789abcdef");
 	write(1, "\n:", 2);
 	ft_putnbr_base(42, "\t0123456789abcdef");
+	ft_putnbr_base(-2147483648, "0123456789abcdef");
 }

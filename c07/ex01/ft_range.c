@@ -6,7 +6,7 @@
 /*   By: lgillard <lgillard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:18:17 by lgillard          #+#    #+#             */
-/*   Updated: 2022/09/22 10:47:33 by lgillard         ###   ########.fr       */
+/*   Updated: 2022/09/26 20:30:59 by lgillard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,12 @@ int	*ft_range(int min, int max)
 	if (min >= max)
 		return (NULL);
 	tab = malloc(sizeof(int) * (max - min));
-	i = min;
-	while (i < max)
+	i = 0;
+	while (min < max)
 	{
-		tab[i] = min + i;
+		tab[i] = min;
 		i++;
+		min++;
 	}
 	return (tab);
 }

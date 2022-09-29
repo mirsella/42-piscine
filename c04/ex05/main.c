@@ -6,7 +6,7 @@
 /*   By: lgillard <lgillard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 19:24:01 by lgillard          #+#    #+#             */
-/*   Updated: 2022/09/21 13:28:52 by lgillard         ###   ########.fr       */
+/*   Updated: 2022/09/26 11:10:29 by lgillard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,6 @@ int	main(void)
 	printf("0:%d\n", ft_atoi_base("   --------+-2a", "0"));
 	printf("0:%d\n", ft_atoi_base("   --------+-2a", "+-0"));
 	printf("0:%d\n", ft_atoi_base("   --------+-2a", "\t01"));
+	printf("%d\n", ft_atoi_base("2a", "0123456789"));
 	return (0);
 }

@@ -3,19 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: badam <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: lgillard <lgillard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/20 02:30:20 by badam             #+#    #+#             */
-/*   Updated: 2019/06/20 06:16:40 by badam            ###   ########.fr       */
+/*   Created: 2022/09/25 10:56:54 by lgillard          #+#    #+#             */
+/*   Updated: 2022/09/29 15:42:12 by lgillard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 char *ft_strjoin(int size, char **strs, char *sep);
 
-int	main(int argc, char **argv)
+int	main(void)
 {
-	printf("./ex03/output___said___this___is___a___success :\n");
-	printf("%s\n",  ft_strjoin(argc, argv, "___"));
+	char **strs = malloc(sizeof(char *) * 3);
+	char *str;
+
+	strs[0] = "hello";
+	strs[1] = "world";
+	strs[2] = "again";
+	char *sep = "__";
+	str = ft_strjoin(3, strs, sep);
+	printf("result : %s", str);
+	free(str);
+	free(strs);
+	return (0);
 }
