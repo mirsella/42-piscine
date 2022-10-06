@@ -1,0 +1,4 @@
+main.c
+*.out
+ft_stock_str.h
+*.o
